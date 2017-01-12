@@ -23,9 +23,9 @@ class MyTableViewController: UITableViewController {
     
     let items: [Person]
     let cellStyle: UITableViewCellStyle
-    let configureCell: (cell: UITableViewCell, item: Person) -> ()
+    let configureCell: (_ cell: UITableViewCell, _ item: Person) -> ()
     
-    init(style: UITableViewStyle, items: [Person], cellStyle: UITableViewCellStyle, editable: Bool, configureCell: (cell: UITableViewCell, item: Person) -> ()) {
+    init(style: UITableViewStyle, items: [Person], cellStyle: UITableViewCellStyle, editable: Bool, configureCell: @escaping (_ cell: UITableViewCell, _ item: Person) -> ()) {
         
         self.items = items
         self.cellStyle = cellStyle
@@ -36,7 +36,7 @@ class MyTableViewController: UITableViewController {
         if editable {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
                 title: "Edit",
-                style: .Plain,
+                style: .plain,
                 target: self,
                 action: #selector(MyTableViewController.edit(_:))
             )
@@ -48,20 +48,20 @@ class MyTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return items.count
     }
     
-    func edit(sender: AnyObject) {
+    func edit(_ sender: AnyObject) {
         
-        tableView.editing = !tableView.editing
+        tableView.isEditing = !tableView.isEditing
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: cellStyle, reuseIdentifier: nil)
-        configureCell(cell: cell, item: items[indexPath.row])
+        configureCell(cell, items[indexPath.row])
         
         return cell
     }
@@ -69,9 +69,9 @@ class MyTableViewController: UITableViewController {
 
 
 let tableVC = MyTableViewController(
-    style: .Plain,
+    style: .plain,
     items: people,
-    cellStyle: .Subtitle,
+    cellStyle: .subtitle,
     editable: true) { cell, item in
         
         cell.textLabel?.text = item.name
@@ -82,7 +82,7 @@ tableVC.title = "Person"
 
 let navigationController = UINavigationController(rootViewController: tableVC)
 
-navigationController.view.frame = CGRectMake(0, 0, 320, 480)
+navigationController.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)
 
 
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
